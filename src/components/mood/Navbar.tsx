@@ -1,0 +1,52 @@
+import { useEffect, useState } from "react";
+
+const links = [
+  { label: "Home", href: "#home" },
+  { label: "Menu", href: "#menu" },
+  { label: "Offers", href: "#offers" },
+  { label: "About", href: "#about" },
+  { label: "Contact", href: "#contact" },
+];
+
+export function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4">
+      <nav
+        className={`glass flex w-full max-w-5xl items-center justify-between rounded-full px-5 py-3 transition-all duration-500 ${
+          scrolled ? "ember-glow py-2.5" : ""
+        }`}
+      >
+        <a href="#home" className="font-display text-xl font-extrabold tracking-tight">
+          M<span className="text-ember">OO</span>D
+        </a>
+        <ul className="hidden items-center gap-1 md:flex">
+          {links.map((l) => (
+            <li key={l.href}>
+              <a
+                href={l.href}
+                className="rounded-full px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary/60 hover:text-foreground"
+              >
+                {l.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a
+          href="#offers"
+          className="rounded-full bg-[image:var(--gradient-ember)] px-5 py-2 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105"
+        >
+          Order
+        </a>
+      </nav>
+    </header>
+  );
+}
